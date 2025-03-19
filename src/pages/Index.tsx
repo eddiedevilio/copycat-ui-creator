@@ -1,9 +1,10 @@
 
 import React, { useEffect, useState } from 'react';
-import { Triangle, ArrowRight, User, Home, ShoppingBag, Box, Computer, Chair, Briefcase } from 'lucide-react';
+import { Triangle, ArrowRight, User, Home, ShoppingBag, Box, Computer, Sofa, Briefcase } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import ProductItem from '@/components/ProductItem';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 // Product images with sample images
 const productImages = {
@@ -61,7 +62,7 @@ const productCategories = [
   { value: 'all', label: 'All Categories', icon: <ShoppingBag size={16} /> },
   { value: 'office supplies', label: 'Office Supplies', icon: <Briefcase size={16} /> },
   { value: 'electronics', label: 'Electronics', icon: <Computer size={16} /> },
-  { value: 'furniture', label: 'Furniture', icon: <Chair size={16} /> },
+  { value: 'furniture', label: 'Furniture', icon: <Sofa size={16} /> },
   { value: 'hospitality supplies', label: 'Hospitality', icon: <Box size={16} /> },
 ];
 
@@ -71,6 +72,11 @@ const Index = () => {
   
   const filteredProducts = selectedCategory === 'all' 
     ? products 
+    : products.filter(product => product.category === selectedCategory);
+
+  // Get products for carousel based on category
+  const carouselProducts = selectedCategory === 'all'
+    ? products
     : products.filter(product => product.category === selectedCategory);
 
   useEffect(() => {
@@ -106,11 +112,32 @@ const Index = () => {
               </h1>
               
               <div className="hidden md:block mt-10 relative">
-                <img 
-                  src={productImages.couch} 
-                  alt="Sofa Cake" 
-                  className="w-full max-w-sm animate-float"
-                />
+                <Carousel className="w-full">
+                  <CarouselContent>
+                    {carouselProducts.map((product) => (
+                      <CarouselItem key={product.id}>
+                        <div className="p-1">
+                          <div className="flex items-center justify-center p-6">
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              className="w-full max-w-sm object-contain h-48 animate-float"
+                              onError={(e) => {
+                                e.currentTarget.src = '/placeholder.svg';
+                              }}
+                            />
+                          </div>
+                          <div className="pt-2 text-center text-white">
+                            <h3 className="font-medium">{product.name}</h3>
+                            <p className="text-xs opacity-70">{product.dimensions}</p>
+                          </div>
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-0 bg-white/30 hover:bg-white/50" />
+                  <CarouselNext className="right-0 bg-white/30 hover:bg-white/50" />
+                </Carousel>
               </div>
             </div>
             
