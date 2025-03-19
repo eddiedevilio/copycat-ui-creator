@@ -105,7 +105,7 @@ const Index = () => {
                 <Triangle size={16} className="text-purple mr-2" />
                 <span className="text-purple text-sm font-medium">Furniture Preview</span>
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold text-white mb-2">
+              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-2">
                 Sofa
                 <br />
                 cake
@@ -123,11 +123,12 @@ const Index = () => {
                               alt={product.name}
                               className="w-full max-w-sm object-contain h-48 animate-float"
                               onError={(e) => {
-                                e.currentTarget.src = '/placeholder.svg';
+                                const target = e.target as HTMLImageElement;
+                                target.src = '/placeholder.svg';
                               }}
                             />
                           </div>
-                          <div className="pt-2 text-center text-white">
+                          <div className="pt-2 text-center text-gray-800">
                             <h3 className="font-medium">{product.name}</h3>
                             <p className="text-xs opacity-70">{product.dimensions}</p>
                           </div>
@@ -135,8 +136,8 @@ const Index = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="left-0 bg-white/30 hover:bg-white/50" />
-                  <CarouselNext className="right-0 bg-white/30 hover:bg-white/50" />
+                  <CarouselPrevious className="left-0 bg-white/80 hover:bg-white" />
+                  <CarouselNext className="right-0 bg-white/80 hover:bg-white" />
                 </Carousel>
               </div>
             </div>

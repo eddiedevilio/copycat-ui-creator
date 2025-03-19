@@ -89,7 +89,7 @@
   }
 
   .add-button {
-    @apply rounded-full w-8 h-8 flex items-center justify-center bg-gray-900 text-white transition-all duration-300 hover:bg-purple-dark;
+    @apply rounded-full w-8 h-8 flex items-center justify-center bg-gray-900 text-white transition-all duration-300 hover:bg-purple-600;
   }
 
   .nav-pill {
@@ -133,4 +133,82 @@
   filter: blur(20px);
   z-index: -1;
   animation: float 8s ease-in-out infinite;
+}
+
+/* Add missing animation definitions */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slide-in 0.5s ease-out forwards;
+}
+
+.text-purple {
+  color: #9b87f5;
+}
+
+.bg-purple {
+  background-color: #9b87f5;
+}
+
+.hover:bg-purple-dark:hover {
+  background-color: #7E69AB;
+}
+
+.hover:bg-purple:hover {
+  background-color: #9b87f5;
 }
