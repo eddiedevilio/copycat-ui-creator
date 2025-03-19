@@ -1,14 +1,13 @@
-
 import React, { useEffect, useState } from 'react';
 import { Triangle, ArrowRight, User, Home } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import ProductItem from '@/components/ProductItem';
 
-// Product images
+// Product images with sample images
 const productImages = {
   worktop: '/lovable-uploads/7905f4c0-6452-4be5-9f9b-22db2bcf043c.png',
-  capsule: '/lovable-uploads/7905f4c0-6452-4be5-9f9b-22db2bcf043c.png',
-  couch: '/lovable-uploads/7905f4c0-6452-4be5-9f9b-22db2bcf043c.png',
+  capsule: '/placeholder.svg',
+  couch: '/placeholder.svg',
 };
 
 const products = [

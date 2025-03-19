@@ -18,7 +18,15 @@ const ProductItem: React.FC<ProductItemProps> = ({ name, dimensions, image, inde
     >
       <div className="flex items-center gap-4">
         <div className="w-10 flex-shrink-0">
-          <img src={image} alt={name} className="product-image animate-float" />
+          <img 
+            src={image} 
+            alt={name} 
+            className="product-image animate-float"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = '/placeholder.svg';
+            }}
+          />
         </div>
         <div className="text-left">
           <h3 className="font-medium text-gray-900">{name}</h3>
