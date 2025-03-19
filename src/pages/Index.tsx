@@ -1,7 +1,9 @@
+
 import React, { useEffect, useState } from 'react';
-import { Triangle, ArrowRight, User, Home } from 'lucide-react';
+import { Triangle, ArrowRight, User, Home, ShoppingBag, Box, Computer, Chair, Briefcase } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import ProductItem from '@/components/ProductItem';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 // Product images with sample images
 const productImages = {
@@ -16,23 +18,60 @@ const products = [
     name: 'Worktop',
     dimensions: '110 x 110',
     image: productImages.worktop,
+    category: 'furniture',
   },
   {
     id: 2,
     name: 'Couch capsule',
     dimensions: '110 x 110',
     image: productImages.capsule,
+    category: 'furniture',
   },
   {
     id: 3,
     name: 'Couch cake',
     dimensions: '110 x 110',
     image: productImages.couch,
+    category: 'furniture',
   },
+  {
+    id: 4,
+    name: 'Ergonomic Chair',
+    dimensions: '80 x 120',
+    image: '/placeholder.svg',
+    category: 'office supplies',
+  },
+  {
+    id: 5,
+    name: 'Laptop Pro X',
+    dimensions: '35 x 25',
+    image: '/placeholder.svg',
+    category: 'electronics',
+  },
+  {
+    id: 6,
+    name: 'Luxury Bedding',
+    dimensions: '200 x 180',
+    image: '/placeholder.svg',
+    category: 'hospitality supplies',
+  },
+];
+
+const productCategories = [
+  { value: 'all', label: 'All Categories', icon: <ShoppingBag size={16} /> },
+  { value: 'office supplies', label: 'Office Supplies', icon: <Briefcase size={16} /> },
+  { value: 'electronics', label: 'Electronics', icon: <Computer size={16} /> },
+  { value: 'furniture', label: 'Furniture', icon: <Chair size={16} /> },
+  { value: 'hospitality supplies', label: 'Hospitality', icon: <Box size={16} /> },
 ];
 
 const Index = () => {
   const [loaded, setLoaded] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  
+  const filteredProducts = selectedCategory === 'all' 
+    ? products 
+    : products.filter(product => product.category === selectedCategory);
 
   useEffect(() => {
     // Simulate loading for animation purposes
@@ -79,11 +118,32 @@ const Index = () => {
             <div className="bg-white rounded-3xl p-6 md:p-8 animate-scale-in">
               <div className="flex justify-between items-center mb-8">
                 <div>
-                  <h2 className="text-2xl font-bold">My storehouse</h2>
+                  <h2 className="text-2xl font-bold">Our products</h2>
                 </div>
                 <div className="w-8 h-8 bg-amber-300 rounded-full flex items-center justify-center">
                   <span className="text-amber-700 text-xs">😊</span>
                 </div>
+              </div>
+              
+              <div className="mb-6">
+                <Select 
+                  defaultValue="all"
+                  onValueChange={(value) => setSelectedCategory(value)}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {productCategories.map((category) => (
+                      <SelectItem key={category.value} value={category.value} className="flex items-center">
+                        <div className="flex items-center gap-2">
+                          {category.icon}
+                          <span>{category.label}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               
               <div className="mb-4">
@@ -91,8 +151,8 @@ const Index = () => {
                 <span className="float-right text-xs font-medium text-gray-500 uppercase tracking-wider">NO</span>
               </div>
               
-              <div className="space-y-1">
-                {products.map((product, index) => (
+              <div className="space-y-1 max-h-60 overflow-y-auto">
+                {filteredProducts.map((product, index) => (
                   <ProductItem
                     key={product.id}
                     name={product.name}
