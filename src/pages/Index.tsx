@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Triangle, ArrowRight, User, Home, ShoppingBag, Box, Computer, Sofa, Briefcase, BookOpen, Smartphone } from 'lucide-react';
 import Navbar from '@/components/Navbar';
@@ -7,7 +6,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { toast } from '@/components/ui/use-toast';
 
-// Product images with sample images
 const productImages = {
   furniture: '/lovable-uploads/7905f4c0-6452-4be5-9f9b-22db2bcf043c.png',
   stationary: '/placeholder.svg',
@@ -15,7 +13,6 @@ const productImages = {
   business: '/placeholder.svg',
 };
 
-// Category display data
 const categoryDisplayData = {
   'furniture': {
     title: 'Sofa cake',
@@ -121,7 +118,6 @@ const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [currentDisplayCategory, setCurrentDisplayCategory] = useState('furniture');
   
-  // Get the category values excluding 'all'
   const categoryValues = productCategories
     .filter(cat => cat.value !== 'all')
     .map(cat => cat.value);
@@ -130,13 +126,11 @@ const Index = () => {
     ? products 
     : products.filter(product => product.category === selectedCategory);
 
-  // Get products for carousel based on category
   const carouselProducts = selectedCategory === 'all'
     ? products
     : products.filter(product => product.category === selectedCategory);
 
   useEffect(() => {
-    // Simulate loading for animation purposes
     const timer = setTimeout(() => {
       setLoaded(true);
     }, 300);
@@ -144,7 +138,6 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Auto-rotate through categories
   useEffect(() => {
     const intervalTime = 5000; // 5 seconds
     const rotateCategories = () => {
@@ -153,14 +146,6 @@ const Index = () => {
       const nextCategory = categoryValues[nextIndex];
       
       setCurrentDisplayCategory(nextCategory);
-      
-      if (selectedCategory === 'all') {
-        // Only show toast when auto-rotating in 'all' mode
-        toast({
-          title: "Category Showcase",
-          description: `Now featuring ${nextCategory}`,
-        });
-      }
     };
 
     const intervalId = setInterval(rotateCategories, intervalTime);
@@ -168,7 +153,6 @@ const Index = () => {
     return () => clearInterval(intervalId);
   }, [currentDisplayCategory, categoryValues, selectedCategory]);
 
-  // Update display category when selected category changes (if not 'all')
   useEffect(() => {
     if (selectedCategory !== 'all') {
       setCurrentDisplayCategory(selectedCategory);
@@ -181,16 +165,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden flex justify-center items-center">
-      {/* Background effects */}
       <div className="blob-bg"></div>
       <div className="blob-shape"></div>
       <div className="blob-shape-2"></div>
       
-      {/* Main container */}
       <div className="w-full max-w-4xl mx-auto relative z-10 animate-fade-in">
         <div className={`bg-white rounded-3xl overflow-hidden shadow-xl transition-all duration-700 transform ${loaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
           <div className="p-8 md:p-12 grid grid-cols-1 md:grid-cols-2 gap-10">
-            {/* Left section */}
             <div className="relative z-10">
               <div className="flex items-center mb-4">
                 <Triangle size={16} className="text-purple mr-2" />
@@ -242,7 +223,6 @@ const Index = () => {
               </div>
             </div>
             
-            {/* Right section */}
             <div className="bg-white rounded-3xl p-6 md:p-8 animate-scale-in">
               <div className="flex justify-between items-center mb-8">
                 <div>
@@ -318,7 +298,6 @@ const Index = () => {
         </div>
       </div>
       
-      {/* Bottom navigation */}
       <Navbar />
     </div>
   );
