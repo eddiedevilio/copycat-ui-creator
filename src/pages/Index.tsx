@@ -1,16 +1,38 @@
 
 import React, { useEffect, useState } from 'react';
-import { Triangle, ArrowRight, User, Home, ShoppingBag, Box, Computer, Sofa, Briefcase } from 'lucide-react';
+import { Triangle, ArrowRight, User, Home, ShoppingBag, Box, Computer, Sofa, Briefcase, BookOpen, Smartphone } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import ProductItem from '@/components/ProductItem';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { toast } from '@/components/ui/use-toast';
 
 // Product images with sample images
 const productImages = {
-  worktop: '/lovable-uploads/7905f4c0-6452-4be5-9f9b-22db2bcf043c.png',
-  capsule: '/placeholder.svg',
-  couch: '/placeholder.svg',
+  furniture: '/lovable-uploads/7905f4c0-6452-4be5-9f9b-22db2bcf043c.png',
+  stationary: '/placeholder.svg',
+  electronics: '/placeholder.svg',
+  business: '/placeholder.svg',
+};
+
+// Category display data
+const categoryDisplayData = {
+  'furniture': {
+    title: 'Sofa cake',
+    image: productImages.furniture
+  },
+  'stationary': {
+    title: 'Premium Notes',
+    image: productImages.stationary
+  },
+  'electronics': {
+    title: 'Smart Device',
+    image: productImages.electronics
+  },
+  'business supplies': {
+    title: 'Office Essentials',
+    image: productImages.business
+  }
 };
 
 const products = [
@@ -18,57 +40,86 @@ const products = [
     id: 1,
     name: 'Worktop',
     dimensions: '110 x 110',
-    image: productImages.worktop,
+    image: productImages.furniture,
     category: 'furniture',
   },
   {
     id: 2,
     name: 'Couch capsule',
     dimensions: '110 x 110',
-    image: productImages.capsule,
+    image: productImages.furniture,
     category: 'furniture',
   },
   {
     id: 3,
     name: 'Couch cake',
     dimensions: '110 x 110',
-    image: productImages.couch,
+    image: productImages.furniture,
     category: 'furniture',
   },
   {
     id: 4,
     name: 'Ergonomic Chair',
     dimensions: '80 x 120',
-    image: '/placeholder.svg',
-    category: 'office supplies',
+    image: productImages.furniture,
+    category: 'furniture',
   },
   {
     id: 5,
-    name: 'Laptop Pro X',
-    dimensions: '35 x 25',
-    image: '/placeholder.svg',
-    category: 'electronics',
+    name: 'Notebook Pro',
+    dimensions: '30 x 21',
+    image: productImages.stationary,
+    category: 'stationary',
   },
   {
     id: 6,
-    name: 'Luxury Bedding',
-    dimensions: '200 x 180',
-    image: '/placeholder.svg',
-    category: 'hospitality supplies',
+    name: 'Premium Pens',
+    dimensions: '14 x 2',
+    image: productImages.stationary,
+    category: 'stationary',
+  },
+  {
+    id: 7,
+    name: 'Laptop Pro X',
+    dimensions: '35 x 25',
+    image: productImages.electronics,
+    category: 'electronics',
+  },
+  {
+    id: 8,
+    name: 'Smart Speaker',
+    dimensions: '15 x 15',
+    image: productImages.electronics,
+    category: 'electronics',
+  },
+  {
+    id: 9,
+    name: 'Business Card Holder',
+    dimensions: '10 x 6',
+    image: productImages.business,
+    category: 'business supplies',
+  },
+  {
+    id: 10,
+    name: 'Document Organizer',
+    dimensions: '35 x 25',
+    image: productImages.business,
+    category: 'business supplies',
   },
 ];
 
 const productCategories = [
   { value: 'all', label: 'All Categories', icon: <ShoppingBag size={16} /> },
-  { value: 'office supplies', label: 'Office Supplies', icon: <Briefcase size={16} /> },
-  { value: 'electronics', label: 'Electronics', icon: <Computer size={16} /> },
   { value: 'furniture', label: 'Furniture', icon: <Sofa size={16} /> },
-  { value: 'hospitality supplies', label: 'Hospitality', icon: <Box size={16} /> },
+  { value: 'stationary', label: 'Stationary', icon: <BookOpen size={16} /> },
+  { value: 'electronics', label: 'Electronics', icon: <Smartphone size={16} /> },
+  { value: 'business supplies', label: 'Business Supplies', icon: <Briefcase size={16} /> },
 ];
 
 const Index = () => {
   const [loaded, setLoaded] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [currentDisplayCategory, setCurrentDisplayCategory] = useState('furniture');
   
   const filteredProducts = selectedCategory === 'all' 
     ? products 
@@ -88,6 +139,17 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Update display category when selected category changes (if not 'all')
+  useEffect(() => {
+    if (selectedCategory !== 'all') {
+      setCurrentDisplayCategory(selectedCategory);
+      toast({
+        title: "Category Changed",
+        description: `Viewing ${selectedCategory} products`,
+      });
+    }
+  }, [selectedCategory]);
+
   return (
     <div className="min-h-screen bg-white relative overflow-hidden flex justify-center items-center">
       {/* Background effects */}
@@ -103,38 +165,47 @@ const Index = () => {
             <div className="relative z-10">
               <div className="flex items-center mb-4">
                 <Triangle size={16} className="text-purple mr-2" />
-                <span className="text-purple text-sm font-medium">Furniture Preview</span>
+                <span className="text-purple text-sm font-medium">
+                  {selectedCategory === 'all' ? 'All Products' : 
+                    productCategories.find(cat => cat.value === selectedCategory)?.label} Preview
+                </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-2">
-                Sofa
-                <br />
-                cake
+                {categoryDisplayData[currentDisplayCategory]?.title || 'Our Products'}
               </h1>
               
               <div className="hidden md:block mt-10 relative">
                 <Carousel className="w-full">
                   <CarouselContent>
-                    {carouselProducts.map((product) => (
-                      <CarouselItem key={product.id}>
-                        <div className="p-1">
-                          <div className="flex items-center justify-center p-6">
-                            <img
-                              src={product.image}
-                              alt={product.name}
-                              className="w-full max-w-sm object-contain h-48 animate-float"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.src = '/placeholder.svg';
-                              }}
-                            />
+                    {carouselProducts.length > 0 ? (
+                      carouselProducts.map((product) => (
+                        <CarouselItem key={product.id}>
+                          <div className="p-1">
+                            <div className="flex items-center justify-center p-6">
+                              <img
+                                src={product.image}
+                                alt={product.name}
+                                className="w-full max-w-sm object-contain h-48 animate-float"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.src = '/placeholder.svg';
+                                }}
+                              />
+                            </div>
+                            <div className="pt-2 text-center text-gray-800">
+                              <h3 className="font-medium">{product.name}</h3>
+                              <p className="text-xs opacity-70">{product.dimensions}</p>
+                            </div>
                           </div>
-                          <div className="pt-2 text-center text-gray-800">
-                            <h3 className="font-medium">{product.name}</h3>
-                            <p className="text-xs opacity-70">{product.dimensions}</p>
-                          </div>
+                        </CarouselItem>
+                      ))
+                    ) : (
+                      <CarouselItem>
+                        <div className="p-6 text-center">
+                          <p>No products found in this category</p>
                         </div>
                       </CarouselItem>
-                    ))}
+                    )}
                   </CarouselContent>
                   <CarouselPrevious className="left-0 bg-white/80 hover:bg-white" />
                   <CarouselNext className="right-0 bg-white/80 hover:bg-white" />
@@ -180,15 +251,21 @@ const Index = () => {
               </div>
               
               <div className="space-y-1 max-h-60 overflow-y-auto">
-                {filteredProducts.map((product, index) => (
-                  <ProductItem
-                    key={product.id}
-                    name={product.name}
-                    dimensions={product.dimensions}
-                    image={product.image}
-                    index={index}
-                  />
-                ))}
+                {filteredProducts.length > 0 ? (
+                  filteredProducts.map((product, index) => (
+                    <ProductItem
+                      key={product.id}
+                      name={product.name}
+                      dimensions={product.dimensions}
+                      image={product.image}
+                      index={index}
+                    />
+                  ))
+                ) : (
+                  <div className="p-4 text-center text-gray-500">
+                    No products found in this category
+                  </div>
+                )}
               </div>
               
               <div className="mt-8 flex items-center justify-between">
