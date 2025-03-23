@@ -3,7 +3,6 @@ import { Triangle, ArrowRight, User, Home, ShoppingBag, Box, Computer, Sofa, Bri
 import Navbar from '@/components/Navbar';
 import ProductItem from '@/components/ProductItem';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { toast } from '@/components/ui/use-toast';
 
 const productImages = {
@@ -126,10 +125,6 @@ const Index = () => {
     ? products 
     : products.filter(product => product.category === selectedCategory);
 
-  const carouselProducts = selectedCategory === 'all'
-    ? products
-    : products.filter(product => product.category === selectedCategory);
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoaded(true);
@@ -180,46 +175,26 @@ const Index = () => {
                     productCategories.find(cat => cat.value === selectedCategory)?.label} Preview
                 </span>
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-2">
+              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-8">
                 {categoryDisplayData[currentDisplayCategory]?.title || 'Our Products'}
               </h1>
               
-              <div className="hidden md:block mt-10 relative">
-                <Carousel className="w-full">
-                  <CarouselContent>
-                    {carouselProducts.length > 0 ? (
-                      carouselProducts.map((product) => (
-                        <CarouselItem key={product.id}>
-                          <div className="p-1">
-                            <div className="flex items-center justify-center p-6">
-                              <img
-                                src={product.image}
-                                alt={product.name}
-                                className="w-full max-w-sm object-contain h-48 animate-float"
-                                onError={(e) => {
-                                  const target = e.target as HTMLImageElement;
-                                  target.src = '/placeholder.svg';
-                                }}
-                              />
-                            </div>
-                            <div className="pt-2 text-center text-gray-800">
-                              <h3 className="font-medium">{product.name}</h3>
-                              <p className="text-xs opacity-70">{product.dimensions}</p>
-                            </div>
-                          </div>
-                        </CarouselItem>
-                      ))
-                    ) : (
-                      <CarouselItem>
-                        <div className="p-6 text-center">
-                          <p>No products found in this category</p>
-                        </div>
-                      </CarouselItem>
-                    )}
-                  </CarouselContent>
-                  <CarouselPrevious className="left-0 bg-white/80 hover:bg-white" />
-                  <CarouselNext className="right-0 bg-white/80 hover:bg-white" />
-                </Carousel>
+              <div className="mt-6 flex items-center justify-center">
+                <div className="p-1 w-full">
+                  {categoryDisplayData[currentDisplayCategory] && (
+                    <div className="flex flex-col items-center">
+                      <img
+                        src={categoryDisplayData[currentDisplayCategory].image}
+                        alt={categoryDisplayData[currentDisplayCategory].title}
+                        className="w-full object-contain h-64 md:h-80 animate-float rounded-lg"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = '/placeholder.svg';
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             
