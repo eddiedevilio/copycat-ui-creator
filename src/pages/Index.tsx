@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Triangle, ArrowRight, User, Home, ShoppingBag, Box, Computer, Sofa, Briefcase, BookOpen, Smartphone } from 'lucide-react';
 import Navbar from '@/components/Navbar';
@@ -171,8 +172,7 @@ const Index = () => {
               <div className="flex items-center mb-4">
                 <Triangle size={16} className="text-purple mr-2" />
                 <span className="text-purple text-sm font-medium">
-                  {selectedCategory === 'all' ? 'All Products' : 
-                    productCategories.find(cat => cat.value === selectedCategory)?.label} Preview
+                  {currentDisplayCategory.charAt(0).toUpperCase() + currentDisplayCategory.slice(1)}
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-8">
