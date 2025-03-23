@@ -121,6 +121,11 @@ const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [currentDisplayCategory, setCurrentDisplayCategory] = useState('furniture');
   
+  // Get the category values excluding 'all'
+  const categoryValues = productCategories
+    .filter(cat => cat.value !== 'all')
+    .map(cat => cat.value);
+  
   const filteredProducts = selectedCategory === 'all' 
     ? products 
     : products.filter(product => product.category === selectedCategory);
@@ -138,6 +143,30 @@ const Index = () => {
     
     return () => clearTimeout(timer);
   }, []);
+
+  // Auto-rotate through categories
+  useEffect(() => {
+    const intervalTime = 5000; // 5 seconds
+    const rotateCategories = () => {
+      const currentIndex = categoryValues.indexOf(currentDisplayCategory);
+      const nextIndex = (currentIndex + 1) % categoryValues.length;
+      const nextCategory = categoryValues[nextIndex];
+      
+      setCurrentDisplayCategory(nextCategory);
+      
+      if (selectedCategory === 'all') {
+        // Only show toast when auto-rotating in 'all' mode
+        toast({
+          title: "Category Showcase",
+          description: `Now featuring ${nextCategory}`,
+        });
+      }
+    };
+
+    const intervalId = setInterval(rotateCategories, intervalTime);
+    
+    return () => clearInterval(intervalId);
+  }, [currentDisplayCategory, categoryValues, selectedCategory]);
 
   // Update display category when selected category changes (if not 'all')
   useEffect(() => {
